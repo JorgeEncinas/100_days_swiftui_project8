@@ -8,7 +8,8 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        GridLayoutView3()
+        //GridLayoutView3()
+        DecodableJSONView()
     }
 }
 
