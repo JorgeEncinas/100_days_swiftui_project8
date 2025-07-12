@@ -60,3 +60,11 @@ struct ImageView5 : View {
     }
 }
 
+#Preview {
+    VStack {
+        ImageView3()
+        ImageView4()
+        ImageView5()
+    }
+}
+
