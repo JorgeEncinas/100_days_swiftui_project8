@@ -15,9 +15,22 @@ struct Mission : Codable, Identifiable {
     // Keeps code organized, and namespace is Mission.CrewRole
     
     let id : Int
-    let launchDate : String?
+    let launchDate : Date? //Changed from `String?` to `Date?` so that it is parsed appropriately
+    // Text(mission.launchDate ?? "N/A") This breaks this line!
     let crew: [CrewRole]
     let description: String
+    
+    var displayName : String {
+        "Apollo \(id)"
+    }
+    
+    var image : String {
+        "apollo\(id)"
+    }
+    
+    var formattedLaunchDate : String {
+        launchDate?.formatted(date: .abbreviated, time: .omitted) ?? "N/A"
+    }
 }
 
 // One more thing:
@@ -30,9 +43,56 @@ struct DecodableJSONGenericView : View {
     let astronauts : [String : Astronaut] = Bundle.main.decode("astronauts.json")
     let missions : [Mission] = Bundle.main.decode("missions.json")
     
+    let columns = [
+        GridItem(.adaptive(minimum: 150))
+    ]
+    
     var body : some View {
-        VStack {
-            Text(String(astronauts.count))
+        NavigationStack {
+            ScrollView {
+                LazyVGrid(columns: columns) {
+                    ForEach(missions) { (mission : Mission) in
+                        NavigationLink {
+                            Text("Detail view")
+                        } label: {
+                            VStack {
+                                Image(mission.image)
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 100, height: 100)
+                                    .padding()
+                                
+                                VStack {
+                                    Text(mission.displayName)
+                                        .font(.headline)
+                                        .foregroundStyle(.white)
+                                    Text(mission.formattedLaunchDate)
+                                        .font(.caption)
+                                        .foregroundStyle(.white)
+                                }
+                                .padding(.vertical)
+                                .frame(maxWidth: .infinity)
+                                .background(.lightBackground)
+                            }
+                            .clipShape(
+                                .rect(cornerRadius: 10)
+                            )
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 10)
+                                    .stroke(.lightBackground)
+                            )
+                        }
+                    }
+                }
+                .padding([.horizontal, .bottom])
+            }
+            .navigationTitle("Moonshot")
+            .background(.darkBackground)
+            .preferredColorScheme(.dark)
         }
     }
+}
+
+#Preview {
+    DecodableJSONGenericView()
 }

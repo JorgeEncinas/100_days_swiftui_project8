@@ -23,6 +23,11 @@ extension Bundle {
         }
         
         let decoder = JSONDecoder()
+        let formatter = DateFormatter()
+        formatter.dateFormat = "y-MM-dd"
+        decoder.dateDecodingStrategy = .formatted(formatter)
+        // Set the decoder to parse dates. However, you must tell it which fields are dates!
+        // Do so in the `struct` that defines your variables and their respective types.
         
         do {
             return try decoder.decode(T.self, from: data)
