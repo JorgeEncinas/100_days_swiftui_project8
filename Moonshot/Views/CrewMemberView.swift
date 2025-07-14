@@ -12,7 +12,7 @@ struct CrewMemberView : View {
     
     var body : some View {
         NavigationLink {
-            Text("Astronaut details")
+            AstronautView(astronaut: crewMember.astronaut)
         } label: {
             HStack {
                 Image(crewMember.astronaut.id)
