@@ -6,13 +6,7 @@
 //
 import SwiftUI
 
-// Loading some Codable Data
 
-struct Astronaut: Codable, Identifiable {
-    let id : String
-    let name : String
-    let description : String
-}
 
 // To convert the JSON `astronauts.json` into a DICTIONARY of Astronaut instances
 // we need to use `Bundle` to:

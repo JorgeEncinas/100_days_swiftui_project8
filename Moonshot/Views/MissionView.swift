@@ -8,8 +8,21 @@ import SwiftUI
 
 struct MissionView : View {
     let mission : Mission
+    let crew : [CrewMember]
     
-    static var sampleMission : Mission {
+    init(mission : Mission, astronauts: [String : Astronaut]) {
+        self.mission = mission
+        
+        self.crew = mission.crew.map { (member : Mission.CrewRole) in
+            if let astronaut = astronauts[member.name] {
+                return CrewMember(role: member.role, astronaut: astronaut)
+            } else {
+                fatalError("Missing '\(member.name)'")
+            }
+        }
+    }
+    
+    static var mockMission : Mission {
         let launchDate = "2000-05-05"
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
@@ -40,6 +53,8 @@ struct MissionView : View {
                     }
                     .padding(.top)
                 
+                DividerView()
+                            
                 VStack(alignment: .leading) {
                     Text("Mission highlights")
                         .font(.title.bold())
@@ -47,6 +62,22 @@ struct MissionView : View {
                     Text(mission.description)
                 }
                 .padding(.horizontal)
+                
+                DividerView()
+                
+                Text("Crew")
+                    .font(.title.bold())
+                    .padding(.bottom, 5)
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack {
+                        ForEach(Array(crew.enumerated()), id: \.element.role) { (index: Int, crewMember : CrewMember) in
+                            CrewMemberView(
+                                crewMember : crewMember,
+                                isLast : index == crew.count - 1
+                            )
+                        }
+                    }
+                }
             }
             .padding(.bottom)
         }
@@ -58,8 +89,9 @@ struct MissionView : View {
 
 #Preview {
     let missions : [Mission] = Bundle.main.decode("missions.json")
+    let astronauts : [String : Astronaut] = Bundle.main.decode("astronauts.json")
     
-    return MissionView(mission: missions[0])
+    return MissionView(mission: missions[0], astronauts: astronauts)
         .preferredColorScheme(.dark)
     
     //return MissionView(mission: MissionView.sampleMission)
