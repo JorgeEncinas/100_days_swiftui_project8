@@ -32,15 +32,32 @@ struct CrewMemberView : View {
                         .foregroundStyle(.white.opacity(0.5))
                 }
                 if(!isLast) {
-                    Rectangle()
-                        .frame(width: 2)
-                        .padding(.leading, 20)
-                        .containerRelativeFrame(.vertical) { height, axis in
-                            height * 0.85
-                        }
+                    VerticalDividerView()
                 }
             }
             .padding(.horizontal)
         }
     }
+}
+
+#Preview {
+    let crewMember = CrewMember(
+        role: "Captain",
+        astronaut: Astronaut(
+            id: "aldrin",
+            name: "Hello",
+            description: "IDK something"
+        )
+    )
+    
+    NavigationStack {
+        CrewMemberView(
+            crewMember : crewMember,
+            isLast: false
+        )
+    }
+    .containerRelativeFrame(.vertical) { height, axis in
+        height * 0.1
+    }
+    .preferredColorScheme(.dark)
 }

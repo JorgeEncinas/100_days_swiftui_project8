@@ -22,26 +22,6 @@ struct MissionView : View {
         }
     }
     
-    static var mockMission : Mission {
-        let launchDate = "2000-05-05"
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd"
-        let date = formatter.date(from: launchDate)
-        
-        let mission : Mission = Mission(
-            id: 1,
-            launchDate: date,
-            crew: [
-                Mission.CrewRole(
-                    name: "Thomas",
-                    role: "Captain"
-                )
-            ],
-            description: "A fictional commander for visualization purposes"
-        )
-        return mission
-    }
-    
     var body : some View {
         ScrollView {
             VStack {
@@ -65,25 +45,33 @@ struct MissionView : View {
                 
                 DividerView()
                 
-                Text("Crew")
-                    .font(.title.bold())
-                    .padding(.bottom, 5)
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack {
-                        ForEach(Array(crew.enumerated()), id: \.element.role) { (index: Int, crewMember : CrewMember) in
-                            CrewMemberView(
-                                crewMember : crewMember,
-                                isLast : index == crew.count - 1
-                            )
-                        }
-                    }
-                }
+                CrewMemberSectionView(crew: crew)
             }
             .padding(.bottom)
         }
         .navigationTitle(mission.displayName)
         .navigationBarTitleDisplayMode(.inline)
         .background(.darkBackground)
+    }
+    
+    static var mockMission : Mission {
+        let launchDate = "2000-05-05"
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        let date = formatter.date(from: launchDate)
+        
+        let mission : Mission = Mission(
+            id: 1,
+            launchDate: date,
+            crew: [
+                Mission.CrewRole(
+                    name: "Thomas",
+                    role: "Captain"
+                )
+            ],
+            description: "A fictional commander for visualization purposes"
+        )
+        return mission
     }
 }
 

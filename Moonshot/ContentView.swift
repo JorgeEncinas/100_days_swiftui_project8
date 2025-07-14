@@ -36,10 +36,13 @@ extension ShapeStyle where Self == Color {
 
 
 struct ContentView: View {
+    
+    
     var body: some View {
         //GridLayoutView3()
         //DecodableJSONView()
-        DecodableJSONGenericView()
+        LaunchesView()
+        
     }
 }
 
