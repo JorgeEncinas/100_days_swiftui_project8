@@ -7,9 +7,9 @@
 // GENERICS
 import SwiftUI
 
-struct Mission : Codable, Identifiable {
+struct Mission : Codable, Identifiable, Hashable {
     
-    struct CrewRole : Codable { //Nested struct!
+    struct CrewRole : Codable, Hashable { //Nested struct!
         let name : String
         let role : String
     }

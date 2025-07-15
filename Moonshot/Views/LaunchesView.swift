@@ -15,6 +15,7 @@ import SwiftUI
 
 struct LaunchesView : View {
     @State private var showAsGrid : Bool = true
+    @State private var navPath = NavigationPath()
     let astronauts : [String : Astronaut] = Bundle.main.decode("astronauts.json")
     let missions : [Mission] = Bundle.main.decode("missions.json")
     
@@ -23,7 +24,7 @@ struct LaunchesView : View {
     ]
     
     var body : some View {
-        NavigationStack {
+        NavigationStack(path: $navPath) {
             ScrollView {
                 if (showAsGrid) {
                     LazyVGrid(columns: columns) {
@@ -60,6 +61,12 @@ struct LaunchesView : View {
                           : "square.grid.2x2"
                     )
                 }
+            }
+            .navigationDestination(for: Mission.self) { mission in
+                MissionView(
+                    mission: mission,
+                    astronauts: astronauts
+                )
             }
         }
     }

@@ -11,10 +11,7 @@ struct MissionSelectView : View {
     let astronauts : [String : Astronaut]
     
     var body : some View {
-        NavigationLink {
-            //Text("Detail view")
-            MissionView(mission: mission, astronauts: astronauts)
-        } label: {
+        NavigationLink(value: mission) {
             VStack {
                 MissionBadgeView(mission : mission)
                 MissionTitleView(mission : mission)
